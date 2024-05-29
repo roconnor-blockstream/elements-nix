@@ -9,11 +9,17 @@
 , srcDir ? null
 , qaAssetsDir ?
         nixpkgs.fetchFromGitHub {
-          owner = "ElementsProject";
+          owner = "roconnor-blockstream";
           repo = "qa-assets";
-          rev = "0c315a2951619857b8d02fadb6b1eda3c746b837";
-          sha256 = "sha256-N8TqPPtHSOyHKuAS295Cf5bNsKNBYwoC/9/5QQgtUXk=";
+          rev = "d1e7bcf1b6d062bdeb0da9680b5ae2ea29dfba6b"; # temporary workaround
+          sha256 = "sha256-hLYDK5OX33kwflb1OOn1q/1cZnOclw+qbtP135pQDRE=";
         }
+#        nixpkgs.fetchFromGitHub {
+#          owner = "ElementsProject";
+#          repo = "qa-assets";
+#          rev = "0c315a2951619857b8d02fadb6b1eda3c746b837";
+#          sha256 = "sha256-N8TqPPtHSOyHKuAS295Cf5bNsKNBYwoC/9/5QQgtUXk=";
+#        }
 , unitTestDataDir ? if qaAssetsDir != null then "${qaAssetsDir}/unit_test_data" else null
 , fuzzSeedCorpusDir ? if qaAssetsDir != null then "${qaAssetsDir}/fuzz_seed_corpus" else null
 }:
