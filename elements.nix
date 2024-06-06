@@ -16,6 +16,8 @@ args@
 , fuzzSeedCorpusDir ? if qaAssetsDir != null then "${qaAssetsDir}/fuzz_seed_corpus" else null
 }:
 
+assert withFuzz -> stdenv.cc.isClang;
+assert withCoverage -> stdenv.cc.isClang;
 let withAssets = doCheck && (withCoverage || doFunctionalTests); in
 with lib;
 stdenv.mkDerivation rec {
