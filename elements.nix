@@ -40,7 +40,7 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ pkg-config autoreconfHook ]
                    ++ optionals stdenv.isLinux [ util-linux ]
                    ++ optionals stdenv.isDarwin [ hexdump ]
-                   ++ optionals withCoverage [ lcov stdenv.cc.cc.libllvm ];
+                   ++ optionals withCoverage [ lcov stdenv.cc.cc.libllvm python3 ];
   buildInputs = [ db48 boost zlib zeromq
                   miniupnpc protobuf libevent];
 
@@ -84,7 +84,7 @@ stdenv.mkDerivation rec {
   postInstall = optionals (withFuzz)
   [ ''
     cp src/test/fuzz/fuzz $out/bin/fuzz
-  ''] ++ optional (withCoverage)
+  ''] ++ optional (doCheck && withCoverage)
   [''
     mkdir -p $out/share
     cp -r *.coverage $out/share/
