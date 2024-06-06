@@ -67,7 +67,7 @@ stdenv.mkDerivation rec {
   testRunnerFlags = [ ]; # ++ optionals enableParallelBuilding [ "-j=$NIX_BUILD_CORES" ];
   checkTarget = if withCoverage then (if withFuzz then "cov_fuzz" else "cov") else "check";
   preCheck = optionals (withCoverage) ''
-    # clang seems to have some sort of bug in '--coverage' which generates .gcno files that incorrectly think boost header files in elements/src/include/boost. 
+    # clang seems to have some sort of bug in '--coverage' which generates .gcno files that incorrectly think boost header files in elements/src/include/boost.
     # This causes a bunch of warnings during the build and will caue genhtml to fail.
     # This workaround is to ignore errors in genhtml.
     # Though it is probably better to update the filter used in the build process to exclude these incorrect boost files and other non-src files.
