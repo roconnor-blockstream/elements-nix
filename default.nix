@@ -6,7 +6,7 @@
 , doCheck ? (doFunctionalTests || withCoverage)
 , withTests ? doCheck
 , withWallet ? true
-, srcDir ? null
+, gitDir ? null
 , qaAssetsDir ?
         nixpkgs.fetchFromGitHub {
           owner = "roconnor-blockstream";
@@ -28,8 +28,5 @@ nixpkgs.callPackage ./elements.nix {
           qaAssetsDir unitTestDataDir fuzzSeedCorpusDir;
   boost = nixpkgs.boost175;
   stdenv = nixpkgs.clangStdenv;
-  ${if srcDir == null then null else "withSource"} =
-    nixpkgs.lib.sourceFilesBySuffices srcDir [ ".ac" ".am" ".m4" ".in" ".include" ".mk" ".h" ".hpp" ".c" ".cc" ".cpp" ".inc" ".py" ".json" ".raw" ".sh" ".1" ".hex" ".csv" ".html" "Makefile"
-      "san" # for lsan, tsan, and ubsan in test/sanitizer_suppresssions
-    ];
+  ${if gitDir == null then null else "withSource"} = builtins.fetchGit gitDir;
 }

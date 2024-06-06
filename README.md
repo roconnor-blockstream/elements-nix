@@ -39,7 +39,12 @@ Suppose `elements-nix` is checked out into `~/elements-nix` and `elements` is ch
 
 If you have made some local changes to elements or have a specific branch checked out that you want to build.
 
-    [~/elements]$ nix-build ~/elements-nix --arg srcDir ./.
+⚠️ Untracked files are ignored. Be sure to stage any new files you want to include in the build.
+
+💡 The `gitDir` value is passed to `builtins.fetchGit` and can be an attribute set.
+
+
+    [~/elements]$ nix-build ~/elements-nix --arg gitDir ./.
 
 If you want to develop elements in its directory.
 
@@ -51,8 +56,8 @@ If you want to develop elements in its directory.
 
 If you want to build your local elements version and test it with your local qa-assets version.
 
-    [~/elements]$ nix-build ~/elements-nix --arg srcDir ./. --arg qaAssetsDir ~/qa-assets --arg doFunctionalTests true
+    [~/elements]$ nix-build ~/elements-nix --arg gitDir ./. --arg qaAssetsDir ~/qa-assets --arg doFunctionalTests true
 
 If you want to build your local elements version and test it with your [local unit-tests data](https://github.com/uncomputable/asset-gen).
 
-    [~/elements]$ nix-build ~/elements-nix --arg srcDir ./. --arg unitTestDataDir ~/asset-gen --arg doFunctionalTests true
+    [~/elements]$ nix-build ~/elements-nix --arg gitDir ./. --arg unitTestDataDir ~/asset-gen --arg doFunctionalTests true
