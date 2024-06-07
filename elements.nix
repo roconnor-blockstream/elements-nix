@@ -18,6 +18,7 @@ args@
 
 assert withFuzz -> stdenv.cc.isClang;
 assert withCoverage -> stdenv.cc.isClang;
+assert doCheck -> withTests;
 let withAssets = doCheck && (withCoverage || doFunctionalTests); in
 with lib;
 stdenv.mkDerivation rec {
