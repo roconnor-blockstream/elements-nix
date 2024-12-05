@@ -23,14 +23,14 @@ let withAssets = doCheck && (withCoverage || doFunctionalTests); in
 with lib;
 stdenv.mkDerivation rec {
   pname = "elements";
-  version = if withSource == null then "22.2.1" else "custom";
+  version = if withSource == null then "23.2.4" else "custom";
 
   src = if withSource != null then withSource else
         fetchFromGitHub {
           owner = "ElementsProject";
           repo = "elements";
           rev = "elements-${version}";
-          sha256 = "sha256-qHtSgfZGZ4Beu5fsJAOZm8ejj7wfHBbOS6WAjOrCuw4=";
+          sha256 = "sha256-UNjYkEZBjGuhkwBxSkNXjBBcLQqoan/afCLhoR2lOY4=";
         };
 
   postPatch = optionals (doCheck)
