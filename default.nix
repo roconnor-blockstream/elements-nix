@@ -26,7 +26,6 @@
 nixpkgs.callPackage ./elements.nix {
   inherit doCheck doFunctionalTests withBench withCoverage withFuzz withTests withWallet
           qaAssetsDir unitTestDataDir fuzzSeedCorpusDir;
-  boost = nixpkgs.boost175;
   miniupnpc = nixpkgs.callPackage ./miniupnpc-2.2.7.nix { };
   lcov = nixpkgs.callPackage ./lcov-1.16.nix { };
   stdenv = nixpkgs.clangStdenv;
