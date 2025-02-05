@@ -33,6 +33,8 @@ stdenv.mkDerivation rec {
           sha256 = "sha256-UNjYkEZBjGuhkwBxSkNXjBBcLQqoan/afCLhoR2lOY4=";
         };
 
+  patches = [ ./elements-lcov.patch ];
+
   postPatch = optionals (doCheck)
   ''
     patchShebangs contrib/filter-lcov.py

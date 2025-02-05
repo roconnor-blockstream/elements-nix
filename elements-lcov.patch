@@ -1,0 +1,11 @@
+--- elements/Makefile.am
++++ elements/Makefile.am
+@@ -188,6 +188,8 @@
+ 	-p "/usr/include/" \
+ 	-p "/usr/lib/" \
+ 	-p "/usr/lib64/" \
++	-p "/nix/store/" \
++	-p "src/include/boost/" \
+ 	-p "src/leveldb/" \
+ 	-p "src/crc32c/" \
+ 	-p "src/bench/" \
