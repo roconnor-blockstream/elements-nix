@@ -1,5 +1,5 @@
 args@
-{ stdenv, fetchFromGitHub ? null, pkg-config, autoreconfHook, db48, boost, zeromq
+{ stdenv, fetchFromGitHub ? null, fetchpatch, pkg-config, autoreconfHook, db48, boost, zeromq
 , zlib, miniupnpc, qtbase ? null, qttools ? null, util-linux ? null, hexdump ? null, protobuf, python3, qrencode, libevent
 , lcov ? null
 , lib, writeText
@@ -14,6 +14,7 @@ args@
 , qaAssetsDir ? null
 , unitTestDataDir ? if qaAssetsDir != null then "${qaAssetsDir}/unit_test_data" else null
 , fuzzSeedCorpusDir ? if qaAssetsDir != null then "${qaAssetsDir}/fuzz_seed_corpus" else null
+, withGCC13Patches ? false
 }:
 
 assert withFuzz -> stdenv.cc.isClang;
@@ -33,7 +34,19 @@ stdenv.mkDerivation rec {
           sha256 = "sha256-UNjYkEZBjGuhkwBxSkNXjBBcLQqoan/afCLhoR2lOY4=";
         };
 
-  patches = [ ./elements-lcov.patch ];
+  patches = optionals withCoverage [ ./elements-lcov.patch ]
+         ++ optionals withGCC13Patches [
+              (fetchpatch {
+                name = "Add-missing-includes-to-fix-gcc-13-compile-error.patch";
+                url = "https://github.com/bitcoin/bitcoin/commit/398768769f85cc1b6ff212ed931646b59fa1acd6.patch";
+                hash = "sha256-4nnE4W0Z5HzVaJ6tB8QmyohXmt6UHUGgDH+s9bQaxhg=";
+              })
+              (fetchpatch {
+                name = "23-x-Add-missing-includes-to-fix-gcc-13-compile-error.patch";
+                url = "https://github.com/bitcoin/bitcoin/commit/af862661654966d5de614755ab9bd1b5913e0959.patch";
+                hash = "sha256-4hcJIje3VAdEEpn2tetgvgZ8nVft+A64bfWLspQtbVw=";
+              })
+            ];
 
   postPatch = optionals (doCheck)
   ''

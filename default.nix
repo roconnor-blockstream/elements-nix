@@ -6,6 +6,7 @@
 , doCheck ? (doFunctionalTests || withCoverage)
 , withTests ? doCheck
 , withWallet ? true
+, withGCC13Patches ? false
 , gitDir ? null
 , qaAssetsDir ?
         nixpkgs.fetchFromGitHub {
@@ -24,7 +25,7 @@
 , fuzzSeedCorpusDir ? if qaAssetsDir != null then "${qaAssetsDir}/fuzz_seed_corpus" else null
 }:
 nixpkgs.callPackage ./elements.nix {
-  inherit doCheck doFunctionalTests withBench withCoverage withFuzz withTests withWallet
+  inherit doCheck doFunctionalTests withBench withCoverage withFuzz withTests withWallet withGCC13Patches
           qaAssetsDir unitTestDataDir fuzzSeedCorpusDir;
   miniupnpc = nixpkgs.callPackage ./miniupnpc-2.2.7.nix { };
   lcov = nixpkgs.callPackage ./lcov-1.16.nix { };
