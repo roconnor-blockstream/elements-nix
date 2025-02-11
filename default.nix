@@ -3,7 +3,7 @@
 , withBench ? false
 , withDebug ? false
 , withCoverage ? false
-, withFuzz ? false
+, withFuzz ? "none" # alterantively a list of sanitizers, or an option for sanitizerMap below.
 , doCheck ? (doFunctionalTests || withCoverage)
 , withTests ? doCheck
 , withWallet ? true
@@ -25,9 +25,15 @@
 , unitTestDataDir ? if qaAssetsDir != null then "${qaAssetsDir}/unit_test_data" else null
 , fuzzSeedCorpusDir ? if qaAssetsDir != null then "${qaAssetsDir}/fuzz_seed_corpus" else null
 }:
+let sanitizerMap = {
+      none = [];
+      fast = ["fuzzer"];
+      full = ["address" "fuzzer" "undefined" "integer"];
+    }; in
 nixpkgs.callPackage ./elements.nix {
-  inherit doCheck doFunctionalTests withBench withCoverage withDebug withFuzz withTests withWallet withGCC13Patches
+  inherit doCheck doFunctionalTests withBench withCoverage withDebug withTests withWallet withGCC13Patches
           qaAssetsDir unitTestDataDir fuzzSeedCorpusDir;
+  sanitizers = if builtins.isString withFuzz then sanitizerMap.${withFuzz} else withFuzz;
   miniupnpc = nixpkgs.callPackage ./miniupnpc-2.2.7.nix { };
   lcov = nixpkgs.callPackage ./lcov-1.16.nix { };
   stdenv = nixpkgs.clangStdenv;

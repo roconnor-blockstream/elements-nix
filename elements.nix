@@ -8,7 +8,8 @@ args@
 , withWallet ? true
 , withCoverage ? false
 , withDebug ? false
-, withFuzz ? false
+, sanitizers ? []
+, withFuzz ? lib.elem "fuzzer" sanitizers
 , doCheck ? (doFunctionalTests || withCoverage)
 , withTests ? doCheck
 , doFunctionalTests ? true
@@ -21,8 +22,8 @@ args@
 assert withFuzz -> stdenv.cc.isClang;
 assert withCoverage -> stdenv.cc.isClang;
 assert doCheck -> withTests;
-let withAssets = doCheck && (withCoverage || doFunctionalTests); in
 with lib;
+let withAssets = doCheck && (withCoverage || doFunctionalTests); in
 stdenv.mkDerivation rec {
   pname = "elements";
   version = if withSource == null then "23.2.4" else "custom";
@@ -72,7 +73,9 @@ stdenv.mkDerivation rec {
                    ] ++ optionals (withDebug) [
                      "--enable-debug"
                    ] ++ optionals (withFuzz) [
-                     "--enable-fuzz --with-sanitizers=address,fuzzer,undefined"
+                     "--enable-fuzz"
+                   ] ++ optionals ([] != sanitizers) [
+                     "--with-sanitizers=${concatStringsSep "," sanitizers}"
                    ] ++ optionals (!withBench) [
                      "--disable-bench"
                    ] ++ optionals (!withWallet) [
