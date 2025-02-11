@@ -55,6 +55,7 @@ stdenv.mkDerivation rec {
     patchShebangs contrib/filter-lcov.py
     patchShebangs test/functional
     patchShebangs test/fuzz
+    substituteInPlace test/sanitizer_suppressions/ubsan --replace "*/include/" "include/"
   '';
 
   nativeBuildInputs = [ pkg-config autoreconfHook ]
