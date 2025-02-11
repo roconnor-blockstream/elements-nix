@@ -7,6 +7,7 @@ args@
 , withBench ? false
 , withWallet ? true
 , withCoverage ? false
+, withDebug ? false
 , withFuzz ? false
 , doCheck ? (doFunctionalTests || withCoverage)
 , withTests ? doCheck
@@ -68,6 +69,8 @@ stdenv.mkDerivation rec {
                      "--with-boost=${boost.dev}"
                    ] ++ optionals (withCoverage) [
                      "--enable-lcov --enable-lcov-branch-coverage"
+                   ] ++ optionals (withDebug) [
+                     "--enable-debug"
                    ] ++ optionals (withFuzz) [
                      "--enable-fuzz --with-sanitizers=address,fuzzer,undefined"
                    ] ++ optionals (!withBench) [
